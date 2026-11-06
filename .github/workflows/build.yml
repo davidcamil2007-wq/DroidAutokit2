@@ -1,0 +1,25 @@
+name: Build APKs
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.11.1
+      - run: gradle assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AutoDroidKit-apk
+          path: kit/build/outputs/apk/debug/kit-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AutoDroidPhone-apk
+          path: phone/build/outputs/apk/debug/phone-debug.apk
